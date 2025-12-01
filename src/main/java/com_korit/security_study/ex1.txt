@@ -1,0 +1,39 @@
+security 설정
+1. config파일이기 때문에 @Configuration달아준다. CORS설정인 CorsConfigurationSource 해주고 객체를 하나 만들어준다.
+2. corsConfiguration 객체에 허용을 해주는걸 작성하고 요청 URl에 대한 CORS설정을 적용하기 위한 객체를 생성해준다.
+3. 그 다음에 바로 사용할 수 있게 @Bean등록을 해주고 SecurityFilterChain도 @Bean등록을 해준다.이제 설정을 해줄껀데
+4. 39번 줄은 위에서 만든 CORS정책을 security에 적용하기위해 작성하고 csrf설정을 꺼두고 로그인 폼을 사용하지 않을 꺼기 때문에 49번 줄에
+5. 로그인 방식을 비활성화 해두고 로그인 방식을 사용안하니까 다른 로그인 방식도 비활성화를 해둔다. 그 다음 로그인안하니 로그아웃도 비활성화
+6. 세션을 쓰지 않겠다는 무상태 방식으로 변경해주고 특정 요청 URL에 대한 권한을 설정 해준다.
+7. 비밀번호를 안전하게 암호화하고, 검증하는 역할인 BCryptPasswordEncoder 해준다.
+
+회원가입 로그인 구현하기
+8. AuthController, User, UserRole, Role, AuthService, UserRepository, UserMapper파일 만들어주고
+9. 채워줄 수 있는 User, Role, UserRole부터 채워준다. Dto 작성해주고 SignupReqDto작성해주고
+10. 패스워드를 평문으로 넣으면 안되고 암호화로 넣어야 하기 때문에 변환할때 BCryptPasswordEncoder 객체를 toEntity의 매개변수로 받는다.
+11. 그럼 Entity쓸때 객체만 넘겨주면 패스워드가 암호화가 된다. 이제 AuthController가서 @RestController @RequestMapping해주고
+12. @PostMapping해서 회원가입 요청을 받아주는 signup메소드 작성하고 이제 서비스를 구현해야한다. AuthService 만들고
+13. signupReqDto를 매개변수로 받는 signup메소드 만들고 여기서 username 중복검사, 추가, role추가를 해준다.
+14. DB를 보면 user_tb, role_tb, user_role_tb를 해놔서 추가하기전에 중복검사 부터 해준다. 그러니 UserRepository가서 @Repository해주고
+15. Optional<User> getUserByUsername() 작성 해주고 Username의 정보를 DB에서 조회를 해야하는데 이 조회를
+16. UserMapper가서 getUserByUsername를 하나 선언 해준다. 메퍼역할을하고 있으니 @Mapper해준다.
+17. 구현이 되어있지않고 선언만 되어있는데 이 구현은 쿼리문이 해주기 때문에 resource안에 user_mapper.xml 작성해주고 일단 기본 템플릿을 가져와야하는데
+18. 템플릿은 MyBatis가서 Getting Start가서 Exploring템플릿을 복사해서 xml에 넣어주고 이 xml메퍼랑 유저 메퍼랑 연결 시켜줘야하니  namespace에 연결 시켜준다.
+19. 그럼 연결완료, UserMapper에 getUserByusername메소드를 선언해놨는데 어떻게 구현하냐면 조회니까 xml에 select문에 해당 메소드를 써주면 되는데 select안에 쿼리문을 적어주면 된는데
+20. 그럼 이 쿼리문이 getUserByusername의 구현체가 된다. 표기법이 다르면 매피이 안되는 경우가 있어서 resultMap을 만들어주고 id문, result문 작성해서 매핑해준다.
+21. select문에 resultMap를 작성해주면 알아서 resultMap문을 매핑해준다. 그럼 구현 완료 그리고 AuthService가서 중복검사 할 수 있으니 작성 해준다.
+22. 중복되어있지 않으면 추가해준다. Repository가서 addUser메소드문 작성해주고 UserMapper가서도 void addUser추가해준다. 그럼 또 adduser에 관해 구현을 해줘야하니
+23. xml가서 insert id문 작성 다시 Reposiroty가서 try로 감싸준다(키중복의 예외발생가능성 있기 때문에) userId는 userMapper.addUser(User)해주고 들어가게된다.
+24. user_role_tb도 UserId가 필요하기 때문에 다시 user를 반환하는거다. AuthService에 toEntity에 비크립트가 필요하기 때문에 @Autowired를 해준다.
+role추가
+25. 일단 entity하나 만들어야 하니 AuthService에 빌더 작성 roleId가 3번인 이유는 role_tb에 3번이 임시사용자이기 때문
+UserRole
+26. UserRole도 추가해야하니 UserRoleRepository만들어 주고 UserRoleMapper도 추가하고 mappers에도 user_role_mapper.xml작성
+27. UserRoleMapper에서 addUserRole메소드 작성해주고 이거에 대해서도 쿼리문으로 작성 해줘야하니 xml가서 똑같이 작성해준다.
+28. UserRoleRepository가서 @Autowired해주고 addUserRole해주고 void니 리턴이없다.
+이제 컨트롤러 가서 작성
+
+User에 List<UserRole> userRoles;작성
+UserRole은 Role을 가져오기 가능
+
+
