@@ -1,6 +1,7 @@
 package com_korit.security_study.service;
 
 import com_korit.security_study.dto.ApiRespDto;
+import com_korit.security_study.dto.OAuth2MergeReqDto;
 import com_korit.security_study.dto.SigninReqDto;
 import com_korit.security_study.dto.SignupReqDto;
 import com_korit.security_study.entity.User;
@@ -72,17 +73,14 @@ public class AuthService {
 
         return new ApiRespDto<>("success", "회원가입이 완료되었습니다.", optionalUser.get());
     }
-
     public ApiRespDto<?> signin(SigninReqDto signinReqDto) {
         Optional<User> foundUser = userRepository.getUserByEmail(signinReqDto.getEmail());
         if (foundUser.isEmpty()) {
             return new ApiRespDto<>("failed", "사용자 정보가 일치하지 않습니다.", null);
         }
-
         if (!bCryptPasswordEncoder.matches(signinReqDto.getPassword(), foundUser.get().getPassword())) {
             return new ApiRespDto<>("failed", "사용자 정보가 일치하지 않습니다.", null);
         }
-
         String accessToken = jwtUtils.generateToken(foundUser.get().getUserId().toString());
         return new ApiRespDto<>("success", "로그인 성공", accessToken);
     }
@@ -90,5 +88,4 @@ public class AuthService {
     public ApiRespDto<?> getUserByUserId(Integer userId) {
         return new ApiRespDto<>("success", "회원 조회", userRepository.getUserByUserId(userId));
     }
-
 }

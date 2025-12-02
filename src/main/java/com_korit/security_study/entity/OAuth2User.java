@@ -16,6 +16,6 @@ public class OAuth2User {
     private Integer oauth2Id;
     private Integer userId;
     private String provider;
-    private String providerUserid;
+    private String providerUserId;
     private LocalDateTime createDt;
 }

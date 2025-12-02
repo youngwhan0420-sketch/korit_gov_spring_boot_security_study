@@ -102,8 +102,9 @@
         join user_role_tb urt on (ut.user_id = urt.user_id)
         join role_tb rt on (rt.role_id = urt.role_id)
         where
-        email = #{email};
+        ut.email = #{email};
     </select>
+
     <update id="updatePassword">
         update
             user_tb

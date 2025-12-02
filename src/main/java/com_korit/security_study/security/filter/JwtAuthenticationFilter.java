@@ -23,6 +23,7 @@ public class JwtAuthenticationFilter implements Filter {
 
     @Autowired
     private JwtUtils jwtUtils;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -32,7 +33,7 @@ public class JwtAuthenticationFilter implements Filter {
 
         //해당 메소드가 아니면 그냥 다음 필터로 넘기겠다.
         List<String> methods = List.of("POST", "PUT", "GET", "PATCH", "DELETE");
-        if (methods.contains(request.getMethod())) {
+        if (!methods.contains(request.getMethod())) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }

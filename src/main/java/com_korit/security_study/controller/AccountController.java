@@ -16,6 +16,11 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+    @GetMapping("/pricipal")
+    public ResponseEntity<?> getPrincipal(@AuthenticationPrincipal Principal principal) {
+        return ResponseEntity.ok(principal);
+    }
+
     @PostMapping("/modify/username")
     public ResponseEntity<?> modifyUsername(@RequestBody ModifyUsernameReqDto modifyUsernameReqDto, @AuthenticationPrincipal Principal principal) {
         return ResponseEntity.ok(accountService.modifyUsername(modifyUsernameReqDto, principal));

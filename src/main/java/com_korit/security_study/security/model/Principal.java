@@ -1,5 +1,6 @@
 package com_korit.security_study.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com_korit.security_study.entity.UserRole;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class Principal implements UserDetails {
     private Integer userId;
     private String username;
+    @JsonIgnore
     private String password;
     private String email;
 
