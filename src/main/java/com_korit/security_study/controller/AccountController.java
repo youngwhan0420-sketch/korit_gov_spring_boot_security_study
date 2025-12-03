@@ -16,28 +16,13 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/pricipal")
+    @GetMapping("/principal")
     public ResponseEntity<?> getPrincipal(@AuthenticationPrincipal Principal principal) {
         return ResponseEntity.ok(principal);
-    }
-
-    @PostMapping("/modify/username")
-    public ResponseEntity<?> modifyUsername(@RequestBody ModifyUsernameReqDto modifyUsernameReqDto, @AuthenticationPrincipal Principal principal) {
-        return ResponseEntity.ok(accountService.modifyUsername(modifyUsernameReqDto, principal));
     }
 
     @PostMapping("/modify/password")
     public ResponseEntity<?> modifyPassword(@RequestBody ModifyPasswordReqDto modifyPasswordReqDto, @AuthenticationPrincipal Principal principal) {
         return ResponseEntity.ok(accountService.modifyPassword(modifyPasswordReqDto, principal));
-    }
-
-    @GetMapping("/verify/get")
-    public ResponseEntity<?> getVerifyCode(@RequestParam Integer userId, @AuthenticationPrincipal Principal principal) {
-        return ResponseEntity.ok(accountService.getVerifyCode(userId, principal));
-    }
-
-    @PostMapping("/verify/compare")
-    public ResponseEntity<?> compareVerifyCode(@RequestBody CompareVerifyCodeReqDto compareVerifyCodeReqDto, @AuthenticationPrincipal Principal principal) {
-        return ResponseEntity.ok(accountService.compareVerifyCode(compareVerifyCodeReqDto, principal));
     }
 }

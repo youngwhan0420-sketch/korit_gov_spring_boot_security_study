@@ -8,5 +8,5 @@ import java.util.List;
 public interface UserRoleMapper {
     void addUserRole(UserRole userRole);
     List<UserRole> getUserRoleList(Integer userId);
-    int updateUserRole(UserRole userRole);
+    void updateUserRole(UserRole userRole);
 }

@@ -4,7 +4,6 @@ import com_korit.security_study.entity.OAuth2User;
 import com_korit.security_study.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Data

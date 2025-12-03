@@ -27,9 +27,9 @@ public class OAuth2PrincipalService extends DefaultOAuth2UserService { //오어�
         //provider => 공급처(google, naver, kakao)
         String provider = userRequest.getClientRegistration().getRegistrationId(); //이렇게 하면 provider을 받아올 수 있다.
         //이메일을 뽑아와야 한다.
-        String email = null;
+        String email = (String) attributes.get("email");
         // 공급처에서 발행한 사용자 식별자
-        String providerUserId = null;
+        String providerUserId = attributes.get("sub").toString();
         // 먼저 잡아두는 이유는 플랫폼마다 다 다르게 넣어져 있어서 파싱을 다 다르게 해줘야한다.
 
 
@@ -52,7 +52,7 @@ public class OAuth2PrincipalService extends DefaultOAuth2UserService { //오어�
         );
         // 임시 권한 부여 (Role_TEMPORARY) 얘를 부여한다.
         // 실제 권한은 OAuth2SuccessHandler에서 판단
-        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_TEMPORARY"));
+        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_TEMPORARY_USER"));
 
         //Spring Security가 사용할 OAuth2User 객체 생성해서 반환
         //id => principal.getName() 했을 때 사용할 이름
